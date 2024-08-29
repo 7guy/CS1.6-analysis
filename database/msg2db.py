@@ -12,11 +12,11 @@ log_format = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 coloredlogs.install(level='DEBUG', logger=logger, fmt=log_format)
 
 # Database connection parameters
-DB_NAME = "CS1.6"  # Your database name
-DB_USER = "postgres"  # Your PostgreSQL username
-DB_PASSWORD = getpass("Enter your PostgreSQL password: ")   # Your PostgreSQL password
-DB_HOST = "localhost"  # Usually 'localhost' if running locally
-DB_PORT = "5432"  # Default port for PostgreSQL
+DB_NAME = "CS1.6"  
+DB_USER = "postgres"  
+DB_PASSWORD = getpass("Enter your PostgreSQL password: ")  
+DB_HOST = "localhost"  
+DB_PORT = "5432" 
 
 # Connect to the database
 conn = psycopg2.connect(
