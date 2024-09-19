@@ -9,18 +9,22 @@ This project aims to provide data-driven insights into gameplay performance, ena
 Plugins to add:
  - kill-distance.sma
  - headshot_logger2.sma
+   
 2. under 'utils' folder run the script that add the plugin to the game:
+3. 
    ```python utils/add_plugin.py -f X.sma```
    
-3. Handle the log files and insert them to the DB:
+4. Handle the log files and insert them to the DB:
 
-```python logs/copy.py```
+  ```python logs/copy.py```
 
-```python logs/parse.py```
+  ```python logs/parse.py```
 
-```python database/msg2db.py``` (demand DB password)
+  ```python database/msg2db.py``` (demand DB password)
+
 
 4. Run the Dashboard:
+   
 ```python -m streamlit run dashboard/run.py```
 
 
