@@ -11,7 +11,7 @@ Plugins to add:
  - headshot_logger2.sma
    
 2. under 'utils' folder run the script that add the plugin to the game:
-3. 
+   
    ```python utils/add_plugin.py -f X.sma```
    
 4. Handle the log files and insert them to the DB:
