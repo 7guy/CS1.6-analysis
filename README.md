@@ -5,8 +5,8 @@
 This project aims to provide data-driven insights into gameplay performance, enabling players to improve their strategies and make informed decisions. By analyzing game logs, the dashboard helps players understand their performance, identify strengths and weaknesses, and optimize their gameplay based on detailed metrics.
 
 ## Setup
-Before running the analysis, you need to add two essential plugins to your game. These plugins log important data regarding kill's distance and headshots, which is later parsed and analyzed.
-1. Plugins to add:
+1. Before running the analysis, you need to add two essential plugins to your game. These plugins log important data regarding kill's distance and headshots, which is later parsed and analyzed.
+Plugins to add:
  - kill-distance.sma
  - headshot_logger2.sma
 2. under 'utils' folder run the script that add the plugin to the game:
