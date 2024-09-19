@@ -1,21 +1,22 @@
 import psycopg2
 from getpass import getpass
 import pandas as pd
+from datetime import datetime, timedelta
 
 NICK = '@batata doce'
 
 # Database connection parameters
-DB_NAME = "CS1.6"  # Your database name
-DB_USER = "postgres"  # Your PostgreSQL username
-DB_PASSWORD =  getpass("Enter your PostgreSQL password: ")   # Your PostgreSQL password
-DB_HOST = "localhost"  # Usually 'localhost' if running locally
-DB_PORT = "5432"  # Default port for PostgreSQL
+DB_NAME = "CS1.6"
+DB_USER = "postgres"
+DB_PASSWORD =  getpass("Enter your PostgreSQL password: ")
+DB_HOST = "localhost"
+DB_PORT = "5432"
 
 def get_connection():
     conn = psycopg2.connect(
         dbname=DB_NAME,
         user=DB_USER,
-        password=DB_PASSWORD,  # or use input to hide the password
+        password=DB_PASSWORD,
         host=DB_HOST,
         port=DB_PORT
     )
@@ -33,7 +34,10 @@ def get_kill_events():
 def killer_victim_ratio():
     conn = get_connection()
     cur = conn.cursor()
-    query = "SELECT SUM(CASE WHEN killer_name = '@batata doce' THEN 1 ELSE 0 END) AS kill_count, SUM(CASE WHEN victim_name = '@batata doce' THEN 1 ELSE 0 END) AS death_count FROM kill_events;"
+    query = f"""
+    SELECT SUM(CASE WHEN killer_name = '{NICK}' THEN 1 ELSE 0 END) AS kill_count,
+     SUM(CASE WHEN victim_name = '{NICK}' THEN 1 ELSE 0 END) AS death_count FROM kill_events;
+     """
     cur.execute(query)
     result = cur.fetchall()
     cur.close()
@@ -44,10 +48,10 @@ def killer_victim_ratio():
 def kills_by_weapon():
     conn = get_connection()
     cur = conn.cursor()
-    query = """
+    query = f"""
     SELECT weapon, COUNT(*) as kills
     FROM kill_events
-    WHERE killer_name = '@batata doce'
+    WHERE killer_name = '{NICK}'
     GROUP BY weapon
     ORDER BY kills DESC;
     """
@@ -65,10 +69,10 @@ def kills_by_weapon():
 def deaths_by_weapon():
     conn = get_connection()
     cur = conn.cursor()
-    query = """
+    query = f"""
     SELECT weapon, COUNT(*) as kills
     FROM kill_events
-    WHERE victim_name = '@batata doce'
+    WHERE victim_name = '{NICK}'
     GROUP BY weapon
     ORDER BY kills DESC;
     """
@@ -84,10 +88,10 @@ def deaths_by_weapon():
     return df
 
 def kills_by_distance():
-    query = """
+    query = f"""
         SELECT distance, COUNT(*) as kills
         FROM kill_events
-        WHERE killer_name = '@batata doce'
+        WHERE killer_name = '{NICK}'
         GROUP BY distance
         ORDER BY distance;
     """
@@ -98,10 +102,10 @@ def kills_by_distance():
     return df_kills
 
 def deaths_by_distance():
-    query = """
+    query = f"""
         SELECT distance, COUNT(*) as deaths
         FROM kill_events
-        WHERE victim_name = '@batata doce'
+        WHERE victim_name = '{NICK}'
         GROUP BY distance
         ORDER BY distance;
     """
@@ -115,10 +119,10 @@ def deaths_by_distance():
 def avg_kill_distance_per_weapon():
     conn = get_connection()
     cur = conn.cursor()
-    query_kills = """
+    query_kills = f"""
      SELECT weapon, ROUND(AVG(distance)::numeric, 2) as avg_kill_distance, VAR_POP(distance) AS var_kill_distance
      FROM kill_events
-     WHERE killer_name = '@batata doce' AND distance IS NOT NULL
+     WHERE killer_name = '{NICK}' AND distance IS NOT NULL
      GROUP BY weapon;
      """
 
@@ -132,10 +136,10 @@ def avg_kill_distance_per_weapon():
 def avg_death_distance_per_weapon():
     conn = get_connection()
     cur = conn.cursor()
-    query_deaths = """
+    query_deaths = f"""
        SELECT weapon, ROUND(AVG(distance)::numeric, 2) as avg_death_distance,VAR_POP(distance) AS var_death_distance
        FROM kill_events
-       WHERE victim_name = '@batata doce' AND distance IS NOT NULL
+       WHERE victim_name = '{NICK}' AND distance IS NOT NULL
        GROUP BY weapon;
        """
 
@@ -144,3 +148,96 @@ def avg_death_distance_per_weapon():
     cur.close()
     conn.close()
     return deaths_df
+
+
+def total_headshot():
+    conn = get_connection()
+    cur = conn.cursor()
+
+    # Query to get counts of headshots and non-headshots
+    query = f"""
+       SELECT 
+           COUNT(*) FILTER (WHERE headshot IS TRUE) AS headshot_count,
+           COUNT(*) FILTER (WHERE headshot IS FALSE) AS non_headshot_count
+       FROM kill_events
+       WHERE killer_name = '{NICK}';
+       """
+
+    cur.execute(query)
+    result = cur.fetchone()
+    headshot_count, non_headshot_count = result
+    cur.close()
+    conn.close()
+
+    return headshot_count, non_headshot_count
+
+
+def headshot_by_weapon(weapons):
+        conn = get_connection()
+        cur = conn.cursor()
+
+        query = f"""
+        WITH valid_dates AS (
+            SELECT DISTINCT DATE(ts) AS date
+            FROM kill_events
+            WHERE weapon IN {weapons}
+              AND headshot IS NOT NULL
+              AND killer_name = '{NICK}'
+        ),
+        headshot_counts AS (
+            SELECT DATE(ts) AS date, weapon, 
+                   COUNT(*) AS headshot_count
+            FROM kill_events
+            WHERE weapon IN {weapons}
+              AND headshot = TRUE
+              AND killer_name = '{NICK}'
+            GROUP BY date, weapon
+        ),
+        total_counts AS (
+            SELECT DATE(ts) AS date, weapon, 
+                   COUNT(*) AS total_count
+            FROM kill_events
+            WHERE weapon IN {weapons}
+              AND killer_name = '{NICK}'
+            GROUP BY date, weapon
+        )
+        SELECT v.date, t.weapon, 
+               COALESCE(h.headshot_count, 0) AS headshot_count,
+               COALESCE(t.total_count, 0) AS total_count,
+               ROUND(COALESCE(h.headshot_count, 0)::numeric / NULLIF(COALESCE(t.total_count, 0), 0), 2) AS headshot_ratio
+        FROM valid_dates v
+        LEFT JOIN total_counts t ON v.date = t.date
+                                   AND t.weapon IN {weapons}
+        LEFT JOIN headshot_counts h ON v.date = h.date
+                                      AND h.weapon = t.weapon
+        ORDER BY date, weapon;
+        """
+
+        cur.execute(query)
+        df = pd.DataFrame(cur.fetchall(), columns=['Date', 'Weapon', 'Headshot_Count', 'Total_Count', 'Headshot_Ratio'])
+        cur.close()
+        conn.close()
+        return df
+
+
+def headshots_by_distance():
+    conn = get_connection()
+    cur = conn.cursor()
+
+    query = f"""
+        SELECT distance, COUNT(*) AS headshot_count
+        FROM kill_events
+        WHERE killer_name = '{NICK}' AND headshot = TRUE AND distance IS NOT NULL
+        GROUP BY distance
+        ORDER BY distance;
+    """
+
+    cur.execute(query)
+    result = cur.fetchall()
+    cur.close()
+    conn.close()
+
+    # Convert the result to a DataFrame
+    headshots_df = pd.DataFrame(result, columns=['Distance', 'Headshot_Count'])
+
+    return headshots_df
