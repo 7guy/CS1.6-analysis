@@ -1,10 +1,11 @@
+import argparse
 import json
 from datetime import datetime
 import re
 import os
 
 
-def parse_log_entry(log_entry, distance_context):
+def parse_log_entry(log_entry, distance_context,headshot_context):
     pattern = re.compile(r'^L (\d+/\d+/\d+ - \d+:\d+:\d+): (.+)$')
 
     match = pattern.match(log_entry)
@@ -34,6 +35,16 @@ def parse_log_entry(log_entry, distance_context):
                 if distance_context:
                     event["distance"] = distance_context["distance"]
                     distance_context.clear()
+
+                # Check if the kill was a headshot
+                if headshot_context.get("headshot", False):
+                    event["headshot"] = True
+                else:
+                    event["headshot"] = False
+
+                # Clear the headshot context after processing the kill event
+                headshot_context.clear()
+
         elif "triggered" in log_info:
             trigger_match = re.match(r'^"(.+)<(\d+)><(.+)><(.+)>" triggered "(.+)"$', log_info)
             if trigger_match:
@@ -46,6 +57,10 @@ def parse_log_entry(log_entry, distance_context):
         if distance_match:
             distance_context["distance"] = int(distance_match.group(1))
 
+        # Check if the current log entry indicates a headshot
+        if "killed" in log_info and "headshot" in log_info:
+            headshot_context["headshot"] = True
+
         return event
 
     return None
@@ -54,18 +69,31 @@ def parse_log_entry(log_entry, distance_context):
 def parse_log_file(log_file_path):
     parsed_data = []
     distance_context = {}
+    headshot_context = {}
 
     with open(log_file_path, "r") as file:
         for log_entry in file:
-            parsed_entry = parse_log_entry(log_entry, distance_context)
+            parsed_entry = parse_log_entry(log_entry, distance_context, headshot_context)
             if parsed_entry:
                 parsed_data.append(parsed_entry)
 
     return parsed_data
 
+
+def parse_arguments():
+    parser = argparse.ArgumentParser()
+
+    # Positional arguments
+    parser.add_argument("-v","--verbose", action="store_true", help="print details of copied log files.")
+    return parser.parse_args()
+
+
 def main():
+    args = parse_arguments()
+
     log_files_folder = os.path.expanduser("~/PycharmProjects/cs_analytics/logs/log_files")
     output_folder = os.path.expanduser("~/PycharmProjects/cs_analytics/database/parsed_data")
+    num_of_parsed_files = 0
 
     for file_name in os.listdir(log_files_folder):
         log_file_path = os.path.join(log_files_folder, file_name)
@@ -79,7 +107,13 @@ def main():
             with open(output_path, "w") as output_file:
                 json.dump(parsed_data, output_file, default=str, indent=2)
 
-            print(f"Successfully parsed '{file_name}' and saved the parsed data to '{output_path}'.")
+            num_of_parsed_files +=1
+
+            if args.verbose:
+                print(f"Successfully parsed '{file_name}' and saved the parsed data to '{output_path}'.")
+
+    print(f"Successfully parsed '{num_of_parsed_files}' files and saved the parsed data to '{output_folder}'.")
+
 
 if __name__ == "__main__":
     main()
