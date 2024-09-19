@@ -34,3 +34,23 @@ Plugins to add:
 The following pipeline illustrates the end-to-end process of data collection, analysis, and visualization:
 ![image](https://github.com/user-attachments/assets/5053024c-cf24-4162-b125-3251d119afb2)
 
+## Metrics
+
+1. Kill-Death Ratio (KDR)
+Displays the KDR percentage to assess overall performance.
+
+2. Kills and Deaths per Weapon
+Tracks the number of kills and deaths for each weapon.
+
+3. Kills and Deaths per Distance
+Shows how effective you are at various distances.
+
+4. Average Kill and Death Distance per Weapon
+Displays the average distance of kills and deaths for each weapon, offering insights into weapon effectiveness by range.
+
+5. Headshot Rate
+Measures the percentage of kills that were headshots.
+
+6. Headshot Rate per Day for Major Weapons
+Tracks daily headshot rates for AK-47, M4A1, and Deagle to monitor accuracy over time.
+
