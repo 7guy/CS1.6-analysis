@@ -36,6 +36,8 @@ The following pipeline illustrates the end-to-end process of data collection, an
 
 ## Metrics
 
+These key metrics give a clear look at your gameplay performance. They focus on things like kills, weapon use, and accuracy, helping you spot what you're doing well and where you can get better.
+
 1. Kill-Death Ratio (KDR)
 Displays the KDR percentage to assess overall performance.
 
