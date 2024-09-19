@@ -12,11 +12,11 @@ log_format = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 coloredlogs.install(level='DEBUG', logger=logger, fmt=log_format)
 
 # Database connection parameters
-DB_NAME = "CS1.6"  
-DB_USER = "postgres"  
-DB_PASSWORD = getpass("Enter your PostgreSQL password: ")  
-DB_HOST = "localhost"  
-DB_PORT = "5432" 
+DB_NAME = "CS1.6"  # Your database name
+DB_USER = "postgres"  # Your PostgreSQL username
+DB_PASSWORD = getpass("Enter your PostgreSQL password: ")   # Your PostgreSQL password
+DB_HOST = "localhost"  # Usually 'localhost' if running locally
+DB_PORT = "5432"  # Default port for PostgreSQL
 
 # Connect to the database
 conn = psycopg2.connect(
@@ -35,12 +35,12 @@ parsed_data_folder = os.path.expanduser("~/PycharmProjects/cs_analytics/database
 # Function to insert data into the table
 def insert_kill_event(event, log_address):
     query = """
-        INSERT INTO kill_events (ts, event_type, killer_name, killer_id, victim_name, victim_id, weapon, distance, log_address)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);
+        INSERT INTO kill_events (ts, event_type, killer_name, killer_id, victim_name, victim_id, weapon, distance,headshot, log_address)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
     """
     data = (event.get("timestamp"), event.get("event_type"), event.get("killer_name"),
             event.get("killer_id"), event.get("victim_name"), event.get("victim_id"),
-            event.get("weapon"), event.get("distance"), log_address)
+            event.get("weapon"), event.get("distance"), event.get("headshot"), log_address)
 
     cur.execute(query, data)
 
