@@ -56,3 +56,9 @@ Measures the percentage of kills that were headshots.
 6. Headshot Rate per Day for Major Weapons
 Tracks daily headshot rates for AK-47, M4A1, and Deagle to monitor accuracy over time.
 
+
+![csdash1](https://github.com/user-attachments/assets/7f514f19-d0cc-4a2a-b15f-d3c71956c7e7)
+![csdash2](https://github.com/user-attachments/assets/aa595f33-88d4-4da4-a749-2bfee46847bd)
+
+
+
