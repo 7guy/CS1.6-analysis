@@ -4,6 +4,9 @@
 
 This project aims to provide data-driven insights into gameplay performance, enabling players to improve their strategies and make informed decisions. By analyzing game logs, the dashboard helps players understand their performance, identify strengths and weaknesses, and optimize their gameplay based on detailed metrics.
 
+![csdash1](https://github.com/user-attachments/assets/7f514f19-d0cc-4a2a-b15f-d3c71956c7e7)
+![csdash2](https://github.com/user-attachments/assets/aa595f33-88d4-4da4-a749-2bfee46847bd)
+
 ## Setup
 1. Before running the analysis, you need to add two essential plugins to your game. These plugins log important data regarding kill's distance and headshots, which is later parsed and analyzed.
 Plugins to add:
@@ -57,8 +60,6 @@ Measures the percentage of kills that were headshots.
 Tracks daily headshot rates for AK-47, M4A1, and Deagle to monitor accuracy over time.
 
 
-![csdash1](https://github.com/user-attachments/assets/7f514f19-d0cc-4a2a-b15f-d3c71956c7e7)
-![csdash2](https://github.com/user-attachments/assets/aa595f33-88d4-4da4-a749-2bfee46847bd)
 
 
 
