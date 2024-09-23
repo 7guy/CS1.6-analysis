@@ -12,21 +12,19 @@ import plotly.graph_objects as go
 warnings.filterwarnings("ignore")
 NICK = "@batata doce"
 
-
-# ==== set the Dashboard ====
+# ==== Set the Dashboard ====
 st.set_page_config(page_title="CS1.6 Analytics", page_icon=":bar_chart:", layout="wide",
-    initial_sidebar_state="expanded")
+                   initial_sidebar_state="expanded")
 st.title(" :bar_chart: CS1.6 Analytics")
 st.markdown('<style>div.block-container{padding-top:3rem;}</style>', unsafe_allow_html=True)
 
 # Load data
 data = get_kill_events()
 
-# date range filter
-col1, col2 = st.columns((2))
+# ==== Events Filters ====
+# Dates
+col1, col2 = st.columns(2)
 data["ts"] = pd.to_datetime(data["ts"])
-
-# Getting the min and max date
 start_date = pd.to_datetime(data["ts"]).min()
 end_date = pd.to_datetime(data["ts"]).max() + timedelta(days=1)
 
@@ -37,10 +35,8 @@ with col2:
 
 data = data[(data["ts"] >= date1) & (data["ts"] <= date2)].copy()
 
-# ==== Events Filters ====
-#st.sidebar.image("image.png")
+# Sidebar filters
 st.sidebar.header("Filter Events By: ")
-
 killer = st.sidebar.multiselect("Pick Killer", data["killer_name"].unique())
 if not killer:
     filtered_data = data.copy()
@@ -53,22 +49,15 @@ if not victim:
 else:
     filtered_data2 = filtered_data[filtered_data["victim_name"].isin(victim)]
 
-
 weapon = st.sidebar.multiselect("Pick Weapon", filtered_data2["weapon"].unique())
 if not weapon:
     filtered_data3 = filtered_data2.copy()
 else:
     filtered_data3 = filtered_data2[filtered_data2["weapon"].isin(weapon)]
 
-
-# # Display the whole table 'kill_events'
-# st.header('Events')
-# st.dataframe(filtered_data3)
-
-
-
 col1, col2, col3 = st.columns(3)
 with col2:
+    st.subheader("Kills - Deaths Ratio (KDR)")
     result = killer_victim_ratio()
     kills = result[0][0]
     deaths = result[0][1]
@@ -81,10 +70,9 @@ with col2:
     df_melted = df.melt(var_name='type', value_name='number')
     df_melted['type'] = df_melted['type'].replace({'kills': 'Kills', 'deaths': 'Deaths'})
 
-
     color_map = {"Kills": "#FF2B4B", "Deaths": "#7F1B4B"}
-    st.subheader("Kills - Deaths Ratio (KDR)")
-    fig = px.pie(df_melted, values="number", names="type", hole=0.5, color_discrete_sequence=[color_map[type] for type in df_melted['type'].unique()])
+    fig = px.pie(df_melted, values="number", names="type", hole=0.5,
+                 color_discrete_sequence=[color_map[type] for type in df_melted['type'].unique()])
     fig.add_annotation(
         text=f"1  :  {ratio:.2f}",
         showarrow=False,
@@ -98,8 +86,8 @@ with col2:
             orientation="v",
             yanchor="middle",
             y=0.5,
-            xanchor="left",
-            x=-0.1
+            xanchor="right",
+            x=-0.0005
         )
     )
 
@@ -125,8 +113,6 @@ with col1:
     filtered_data3 = filtered_data3.sort_values(by='ts', ascending=False).reset_index(drop=True)
     st.dataframe(filtered_data3[columns_to_keep])
 
-
-
 # ==== Kills/Deaths by Weapon ====
 st.write("---")
 col1, col2 = st.columns(2)
@@ -136,7 +122,8 @@ with col1:
     df_weapons = kills_by_weapon()
 
     # Plot the data
-    fig_weapons = px.bar(df_weapons, x='Weapon', y='Kills', color='Kills', color_continuous_scale=['#FFCCCC', '#FF6666', '#FF2B4B', '#990000'])
+    fig_weapons = px.bar(df_weapons, x='Weapon', y='Kills', color='Kills',
+                         color_continuous_scale=['#FFCCCC', '#FF6666', '#FF2B4B', '#990000'])
     fig_weapons.update_layout(showlegend=False)
 
     # Display the chart
@@ -148,12 +135,12 @@ with col2:
     df_weapons2 = deaths_by_weapon()
 
     # Plot the data
-    fig_weapons2 = px.bar(df_weapons2, x='Weapon', y='Deaths', color='Deaths', color_continuous_scale=['#FFCCCC', '#FF6666', '#FF2B4B', '#990000'])
+    fig_weapons2 = px.bar(df_weapons2, x='Weapon', y='Deaths', color='Deaths',
+                          color_continuous_scale=['#FFCCCC', '#FF6666', '#FF2B4B', '#990000'])
     fig_weapons2.update_layout(showlegend=False)
 
     # Display the chart
     st.plotly_chart(fig_weapons2, use_container_width=True)
-
 
 # ==== Kills/Deaths by Distance on the same plot ====
 st.write("---")
@@ -200,7 +187,7 @@ with col1:
     # Display the combined plot
     st.plotly_chart(fig_combined, use_container_width=True)
 
-# ==== Kills/Deaths avg distance per weapon
+# ==== Kills/Deaths avg distance per weapon ====
 with col2:
     st.subheader("Average Kill/Death Distance per Weapon")
     # Custom reddish color scale
@@ -247,18 +234,17 @@ with col2:
     # Display the chart
     st.plotly_chart(fig, use_container_width=True)
 
-
 # ==== Headshot total ratio ==== #
 st.write("---")
 col1, col2 = st.columns([1, 2])
 
 with col1:
-    st.subheader("Headshot Rate")
+    st.subheader("Headshot Ratio")
     headshot_count, non_headshot_count = total_headshot()
     data = {
         'Type': ['Headshots', 'Non-Headshots'],
         'Count': [headshot_count, non_headshot_count]
-        }
+    }
     df = pd.DataFrame(data)
 
     # Create a pie chart
@@ -283,13 +269,13 @@ with col1:
     fig.update_traces(
         textinfo='percent',  # Show both percentage and label
         insidetextfont=dict(size=26),  # Increase the font size of the text inside the pie
-        textfont=dict(size=25,family='Courier New')  # Increase the font size of the percentage labels
+        textfont=dict(size=25, family='Courier New')  # Increase the font size of the percentage labels
     )
     st.plotly_chart(fig)
 
-# ==== headshot ratio for 3 major weapons ====
+# ==== Headshot Rate for 3 major weapons ====
 with col2:
-    st.subheader("Headshot Ratio Over Time - By Weapon")
+    st.subheader("Headshot Rate Over Time - By Weapon")
     weapons = ('m4a1', 'ak47', 'deagle')
     df = headshot_by_weapon(weapons)
 
@@ -316,17 +302,15 @@ with col2:
         legend_title='Weapon'
     )
 
-    # Show the plot in Streamlit
     st.plotly_chart(fig)
 
-
-# ==== Headshot vs distance
+# ==== Headshot vs distance ====
 st.subheader('Headshots by Distance')
 headshots_df = headshots_by_distance()
 # Create the line chart
 fig = px.scatter(headshots_df, x='Distance', y='Headshot_Count',
 
-              labels={'Distance': 'Distance (meters)', 'Headshot_Count': 'Number of Headshots'},)
+                 labels={'Distance': 'Distance (meters)', 'Headshot_Count': 'Number of Headshots'}, )
 fig.update_traces(line_color='#FB1B43')
 # Customize the layout
 fig.update_layout(
