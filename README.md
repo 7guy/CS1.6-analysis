@@ -10,7 +10,7 @@ This project aims to provide data-driven insights into gameplay performance, ena
 ## Setup
 1. Before running the analysis, you need to add two essential plugins to your game. These plugins log important data regarding kill's distance and headshots, which is later parsed and analyzed.
 Plugins to add:
- - kill-distance.sma
+ - kill-distance2.sma
  - headshot_logger2.sma
    
 2. under 'utils' folder run the script that add the plugin to the game:
