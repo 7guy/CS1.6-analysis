@@ -1,0 +1,120 @@
+[
+  {
+    "timestamp": "2024-08-25 22:39:40"
+  },
+  {
+    "timestamp": "2024-08-25 22:39:41"
+  },
+  {
+    "timestamp": "2024-08-25 22:39:41",
+    "event_type": "Player_Kill",
+    "killer_name": "Eugene",
+    "killer_id": "BOT",
+    "victim_name": "Orin",
+    "victim_id": "BOT",
+    "weapon": "ump45",
+    "distance": 11,
+    "headshot": false
+  },
+  {
+    "timestamp": "2024-08-25 22:39:42"
+  },
+  {
+    "timestamp": "2024-08-25 22:39:42",
+    "event_type": "Player_Kill",
+    "killer_name": "Harold",
+    "killer_id": "BOT",
+    "victim_name": "Eugene",
+    "victim_id": "BOT",
+    "weapon": "ump45",
+    "distance": 16,
+    "headshot": false
+  },
+  {
+    "timestamp": "2024-08-25 22:39:42"
+  },
+  {
+    "timestamp": "2024-08-25 22:39:42",
+    "event_type": "Player_Kill",
+    "killer_name": "Waldo",
+    "killer_id": "BOT",
+    "victim_name": "Harold",
+    "victim_id": "BOT",
+    "weapon": "aug",
+    "distance": 28,
+    "headshot": false
+  },
+  {
+    "timestamp": "2024-08-25 22:39:46"
+  },
+  {
+    "timestamp": "2024-08-25 22:39:46",
+    "event_type": "Player_Kill",
+    "killer_name": "Cecil",
+    "killer_id": "BOT",
+    "victim_name": "@batata doce",
+    "victim_id": "STEAM_0:0:57204110",
+    "weapon": "scout",
+    "distance": 38,
+    "headshot": false
+  },
+  {
+    "timestamp": "2024-08-25 22:39:49"
+  },
+  {
+    "timestamp": "2024-08-25 22:39:49",
+    "event_type": "Player_Kill",
+    "killer_name": "Dean",
+    "killer_id": "BOT",
+    "victim_name": "Clarence",
+    "victim_id": "BOT",
+    "weapon": "ump45",
+    "distance": 9,
+    "headshot": false
+  },
+  {
+    "timestamp": "2024-08-25 22:39:50",
+    "event_type": "Got_The_Bomb",
+    "triggered_by": {
+      "name": "Alfred"
+    }
+  },
+  {
+    "timestamp": "2024-08-25 22:39:52"
+  },
+  {
+    "timestamp": "2024-08-25 22:39:52",
+    "event_type": "Player_Kill",
+    "killer_name": "Graham",
+    "killer_id": "BOT",
+    "victim_name": "Ron",
+    "victim_id": "BOT",
+    "weapon": "mac10",
+    "distance": 16,
+    "headshot": false
+  },
+  {
+    "timestamp": "2024-08-25 22:39:53"
+  },
+  {
+    "timestamp": "2024-08-25 22:39:53",
+    "event_type": "Player_Kill",
+    "killer_name": "Waldo",
+    "killer_id": "BOT",
+    "victim_name": "Alfred",
+    "victim_id": "BOT",
+    "weapon": "aug",
+    "distance": 22,
+    "headshot": false
+  },
+  {
+    "timestamp": "2024-08-25 22:39:53",
+    "event_type": "Dropped_The_Bomb",
+    "triggered_by": {
+      "name": "Alfred"
+    }
+  },
+  {
+    "timestamp": "2024-08-25 22:39:53"
+  }
+]

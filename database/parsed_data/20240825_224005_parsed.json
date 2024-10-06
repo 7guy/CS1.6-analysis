@@ -1,0 +1,358 @@
+[
+  {
+    "timestamp": "2024-08-25 22:40:05"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:05"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:05"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:05"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:05",
+    "event_type": "Spawned_With_The_Bomb",
+    "triggered_by": {
+      "name": "Irving"
+    }
+  },
+  {
+    "timestamp": "2024-08-25 22:40:05"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:05"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:06"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:06"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:06"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:06"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:06"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:06"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:06"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:07"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:07"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:07"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:07"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:07"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:07"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:08"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:08"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:08"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:08"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:08"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:08"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:08"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:09"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:09"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:09"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:09"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:09"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:09",
+    "event_type": "Round_Start"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:09"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:09"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:10"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:10"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:10"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:10"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:21"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:21",
+    "event_type": "Player_Kill",
+    "killer_name": "Pat",
+    "killer_id": "BOT",
+    "victim_name": "Jason",
+    "victim_id": "BOT",
+    "weapon": "usp",
+    "distance": 19,
+    "headshot": false
+  },
+  {
+    "timestamp": "2024-08-25 22:40:28"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:28",
+    "event_type": "Player_Kill",
+    "killer_name": "Irving",
+    "killer_id": "BOT",
+    "victim_name": "Brandon",
+    "victim_id": "BOT",
+    "weapon": "mac10",
+    "distance": 8,
+    "headshot": false
+  },
+  {
+    "timestamp": "2024-08-25 22:40:28"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:28",
+    "event_type": "Player_Kill",
+    "killer_name": "Wesley",
+    "killer_id": "BOT",
+    "victim_name": "Graham",
+    "victim_id": "BOT",
+    "weapon": "ump45",
+    "distance": 22,
+    "headshot": false
+  },
+  {
+    "timestamp": "2024-08-25 22:40:32"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:32",
+    "event_type": "Player_Kill",
+    "killer_name": "Harvey",
+    "killer_id": "BOT",
+    "victim_name": "Wesley",
+    "victim_id": "BOT",
+    "weapon": "ump45",
+    "distance": 26,
+    "headshot": false
+  },
+  {
+    "timestamp": "2024-08-25 22:40:33"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:33",
+    "event_type": "Player_Kill",
+    "killer_name": "Pat",
+    "killer_id": "BOT",
+    "victim_name": "Ron",
+    "victim_id": "BOT",
+    "weapon": "xm1014",
+    "distance": 9,
+    "headshot": false
+  },
+  {
+    "timestamp": "2024-08-25 22:40:36"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:36",
+    "event_type": "Player_Kill",
+    "killer_name": "Dean",
+    "killer_id": "BOT",
+    "victim_name": "Yuri",
+    "victim_id": "BOT",
+    "weapon": "famas",
+    "distance": 5,
+    "headshot": false
+  },
+  {
+    "timestamp": "2024-08-25 22:40:36"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:36",
+    "event_type": "Player_Kill",
+    "killer_name": "Irving",
+    "killer_id": "BOT",
+    "victim_name": "Ulysses",
+    "victim_id": "BOT",
+    "weapon": "mac10",
+    "distance": 3,
+    "headshot": false
+  },
+  {
+    "timestamp": "2024-08-25 22:40:38"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:38",
+    "event_type": "Player_Kill",
+    "killer_name": "Dean",
+    "killer_id": "BOT",
+    "victim_name": "Henry",
+    "victim_id": "BOT",
+    "weapon": "famas",
+    "distance": 25,
+    "headshot": false
+  },
+  {
+    "timestamp": "2024-08-25 22:40:40"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:40",
+    "event_type": "Player_Kill",
+    "killer_name": "Ulric",
+    "killer_id": "BOT",
+    "victim_name": "Will",
+    "victim_id": "BOT",
+    "weapon": "m3",
+    "distance": 19,
+    "headshot": false
+  },
+  {
+    "timestamp": "2024-08-25 22:40:42"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:42",
+    "event_type": "Player_Kill",
+    "killer_name": "Pat",
+    "killer_id": "BOT",
+    "victim_name": "Neil",
+    "victim_id": "BOT",
+    "weapon": "xm1014",
+    "distance": 2,
+    "headshot": false
+  },
+  {
+    "timestamp": "2024-08-25 22:40:45"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:45",
+    "event_type": "Player_Kill",
+    "killer_name": "Fred",
+    "killer_id": "BOT",
+    "victim_name": "Waldo",
+    "victim_id": "BOT",
+    "weapon": "famas",
+    "distance": 18,
+    "headshot": false
+  },
+  {
+    "timestamp": "2024-08-25 22:40:46"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:46",
+    "event_type": "Player_Kill",
+    "killer_name": "Dean",
+    "killer_id": "BOT",
+    "victim_name": "Elliot",
+    "victim_id": "BOT",
+    "weapon": "famas",
+    "distance": 22,
+    "headshot": false
+  },
+  {
+    "timestamp": "2024-08-25 22:40:47"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:47",
+    "event_type": "Player_Kill",
+    "killer_name": "Bert",
+    "killer_id": "BOT",
+    "victim_name": "Pat",
+    "victim_id": "BOT",
+    "weapon": "galil",
+    "distance": 7,
+    "headshot": false
+  },
+  {
+    "timestamp": "2024-08-25 22:40:50"
+  },
+  {
+    "timestamp": "2024-08-25 22:40:50",
+    "event_type": "Player_Kill",
+    "killer_name": "Uri",
+    "killer_id": "BOT",
+    "victim_name": "Harvey",
+    "victim_id": "BOT",
+    "weapon": "xm1014",
+    "distance": 17,
+    "headshot": false
+  },
+  {
+    "timestamp": "2024-08-25 22:40:52",
+    "event_type": "Planted_The_Bomb",
+    "triggered_by": {
+      "name": "Irving"
+    }
+  },
+  {
+    "timestamp": "2024-08-25 22:41:03"
+  },
+  {
+    "timestamp": "2024-08-25 22:41:03",
+    "event_type": "Player_Kill",
+    "killer_name": "Uri",
+    "killer_id": "BOT",
+    "victim_name": "Albert",
+    "victim_id": "BOT",
+    "weapon": "xm1014",
+    "distance": 17,
+    "headshot": false
+  },
+  {
+    "timestamp": "2024-08-25 22:41:05"
+  },
+  {
+    "timestamp": "2024-08-25 22:41:05",
+    "event_type": "Player_Kill",
+    "killer_name": "Shawn",
+    "killer_id": "BOT",
+    "victim_name": "Perry",
+    "victim_id": "BOT",
+    "weapon": "sg552",
+    "distance": 13,
+    "headshot": false
+  },
+  {
+    "timestamp": "2024-08-25 22:41:07"
+  }
+]
