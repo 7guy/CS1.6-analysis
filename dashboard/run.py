@@ -142,11 +142,11 @@ with col2:
     # Display the chart
     st.plotly_chart(fig_weapons2, use_container_width=True)
 
-# ==== Kills/Deaths by Distance on the same plot ====
+
 st.write("---")
 col1, col2 = st.columns(2)
 
-# Left Column - Combined Kills and Deaths per Distance
+#  ==== Left Column - Combined Kills and Deaths per Distance on the same plot
 with col1:
     df_kills_distance = kills_by_distance()
     df_kills_distance = df_kills_distance.dropna()  # Remove NaN values
@@ -155,13 +155,27 @@ with col1:
 
     st.subheader("Kills and Deaths per Distance")
 
+    # Merge the kills and deaths DataFrames using a left join to keep all kills distances
+    df_combined = pd.merge(df_kills_distance, df_deaths_distance, on='distance', how='left')
+
+    # Fill any missing deaths with 0, since some kill distances may not have corresponding deaths
+    df_combined['deaths'] = df_combined['deaths'].fillna(0)
+
+    # Calculate performance score as (kills - deaths)
+    df_combined['performance'] = df_combined['kills'] - df_combined['deaths']
+
+    # Identify the best distance where the performance score is the highest
+    best_distance = df_combined.loc[df_combined['performance'].idxmax(), 'distance']
+    best_kills = df_combined.loc[df_combined['performance'].idxmax(), 'kills']
+    best_deaths = df_combined.loc[df_combined['performance'].idxmax(), 'deaths']
+
     # Create a figure with both kills and deaths traces
     fig_combined = px.line()
 
     # Add Kills per Distance trace
     fig_combined.add_scatter(
-        x=df_kills_distance['distance'],
-        y=df_kills_distance['kills'],
+        x=df_combined['distance'],
+        y=df_combined['kills'],
         mode='lines+markers',
         name='Kills',
         line_shape='spline',
@@ -171,8 +185,8 @@ with col1:
 
     # Add Deaths per Distance trace
     fig_combined.add_scatter(
-        x=df_deaths_distance['distance'],
-        y=df_deaths_distance['deaths'],
+        x=df_combined['distance'],
+        y=df_combined['deaths'],
         mode='lines+markers',
         name='Deaths',
         line_shape='spline',
@@ -180,14 +194,25 @@ with col1:
         marker=dict(color='#FF6347')
     )
 
+    # Highlight the best distance
+    fig_combined.add_scatter(
+        x=[best_distance],
+        y=[best_kills],
+        mode='markers',
+        marker=dict(color='#FF2B4B', size=12, symbol='cross'),
+        name='Best Distance'
+    )
+
+
     # Update y-axis range based on the maximum values
-    max_value = max(df_kills_distance['kills'].max(), df_deaths_distance['deaths'].max())
+    max_value = max(df_combined['kills'].max(), df_combined['deaths'].max())
     fig_combined.update_yaxes(range=[0, max_value * 1.2])
     fig_combined.update_layout(height=500)
+
     # Display the combined plot
     st.plotly_chart(fig_combined, use_container_width=True)
 
-# ==== Kills/Deaths avg distance per weapon ====
+# ====Right col -  Kills/Deaths avg distance per weapon ====
 with col2:
     st.subheader("Average Kill/Death Distance per Weapon")
     # Custom reddish color scale
@@ -234,10 +259,11 @@ with col2:
     # Display the chart
     st.plotly_chart(fig, use_container_width=True)
 
-# ==== Headshot total ratio ==== #
+
 st.write("---")
 col1, col2 = st.columns([1, 2])
 
+# ==== Headshot total ratio ==== #
 with col1:
     st.subheader("Headshot Ratio")
     headshot_count, non_headshot_count = total_headshot()
