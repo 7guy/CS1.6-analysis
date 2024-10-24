@@ -55,6 +55,7 @@ if not weapon:
 else:
     filtered_data3 = filtered_data2[filtered_data2["weapon"].isin(weapon)]
 
+# ==== Events and KDR ==== #
 col1, col2, col3 = st.columns(3)
 with col2:
     st.subheader("Kills - Deaths Ratio (KDR)")
@@ -86,8 +87,8 @@ with col2:
             orientation="v",
             yanchor="middle",
             y=0.5,
-            xanchor="right",
-            x=-0.0005
+            xanchor="left",
+            x=-0.02
         )
     )
 
@@ -142,34 +143,39 @@ with col2:
     # Display the chart
     st.plotly_chart(fig_weapons2, use_container_width=True)
 
-
+# ==== Kills/Deaths by Distance on the same plot ====
 st.write("---")
 col1, col2 = st.columns(2)
 
-#  ==== Left Column - Combined Kills and Deaths per Distance on the same plot
+# Left Column - Combined Kills, Deaths, and Headshots per Distance
 with col1:
+    st.subheader("Kills(+Headshots)/Deaths by Distance")
+    # Fetch data
     df_kills_distance = kills_by_distance()
     df_kills_distance = df_kills_distance.dropna()  # Remove NaN values
     df_deaths_distance = deaths_by_distance()
     df_deaths_distance = df_deaths_distance.dropna()  # Remove NaN values
+    headshots_df = headshots_by_distance()
 
-    st.subheader("Kills and Deaths per Distance")
-
-    # Merge the kills and deaths DataFrames using a left join to keep all kills distances
+    # Merge kills and deaths DataFrames on distance
     df_combined = pd.merge(df_kills_distance, df_deaths_distance, on='distance', how='left')
 
-    # Fill any missing deaths with 0, since some kill distances may not have corresponding deaths
+    # Fill missing deaths with 0
     df_combined['deaths'] = df_combined['deaths'].fillna(0)
 
-    # Calculate performance score as (kills - deaths)
+    # Merge headshot data into the combined dataframe
+    df_combined = pd.merge(df_combined, headshots_df, left_on='distance', right_on='Distance', how='left')
+    df_combined['Headshot_Count'] = df_combined['Headshot_Count'].fillna(0)  # Fill missing headshots with 0
+
+    # Calculate performance score (kills - deaths)
     df_combined['performance'] = df_combined['kills'] - df_combined['deaths']
 
-    # Identify the best distance where the performance score is the highest
+    # Find the best distance based on the highest performance score
     best_distance = df_combined.loc[df_combined['performance'].idxmax(), 'distance']
     best_kills = df_combined.loc[df_combined['performance'].idxmax(), 'kills']
     best_deaths = df_combined.loc[df_combined['performance'].idxmax(), 'deaths']
 
-    # Create a figure with both kills and deaths traces
+    # Create a combined figure with kills, deaths, and headshots
     fig_combined = px.line()
 
     # Add Kills per Distance trace
@@ -194,7 +200,18 @@ with col1:
         marker=dict(color='#FF6347')
     )
 
-    # Highlight the best distance
+    # Add Headshots per Distance trace (scatter line)
+    fig_combined.add_scatter(
+        x=df_combined['distance'],
+        y=df_combined['Headshot_Count'],
+        mode='lines',
+        name='Headshots',
+        line_shape='spline',
+        line=dict(color='#FB1B43', width=1, dash='5px,2px'),  # Thin and dashed line
+        marker=dict(color='#FB1B43')
+    )
+
+    # Highlight the best distance with a marker
     fig_combined.add_scatter(
         x=[best_distance],
         y=[best_kills],
@@ -203,16 +220,12 @@ with col1:
         name='Best Distance'
     )
 
+    # Show the plot in the Streamlit app
+    st.plotly_chart(fig_combined)
 
-    # Update y-axis range based on the maximum values
-    max_value = max(df_combined['kills'].max(), df_combined['deaths'].max())
-    fig_combined.update_yaxes(range=[0, max_value * 1.2])
-    fig_combined.update_layout(height=500)
 
-    # Display the combined plot
-    st.plotly_chart(fig_combined, use_container_width=True)
 
-# ====Right col -  Kills/Deaths avg distance per weapon ====
+# ==== Kills/Deaths avg distance per weapon ====
 with col2:
     st.subheader("Average Kill/Death Distance per Weapon")
     # Custom reddish color scale
@@ -259,11 +272,10 @@ with col2:
     # Display the chart
     st.plotly_chart(fig, use_container_width=True)
 
-
+# ==== Headshot total ratio ==== #
 st.write("---")
 col1, col2 = st.columns([1, 2])
 
-# ==== Headshot total ratio ==== #
 with col1:
     st.subheader("Headshot Ratio")
     headshot_count, non_headshot_count = total_headshot()
@@ -299,23 +311,39 @@ with col1:
     )
     st.plotly_chart(fig)
 
-# ==== Headshot Rate for 3 major weapons ====
+# ==== Headshot Rate for 3 major weapons - default last 10 days ====
 with col2:
     st.subheader("Headshot Rate Over Time - By Weapon")
     weapons = ('m4a1', 'ak47', 'deagle')
     df = headshot_by_weapon(weapons)
 
+    # Get the max and min dates from the data
+    max_date = df['Date'].max()
+    min_date = df['Date'].min()
+
+    # Set default start and end dates to display the last 10 days
+    default_start_date = max_date - pd.Timedelta(days=20)
+    default_end_date = max_date
+
     col2_1, col2_2 = st.columns(2)
-    start_date = col2_1.date_input("Start Date", df['Date'].min(), key='start_date')
-    end_date = col2_2.date_input("End Date", df['Date'].max(), key='end_date')
+
+    # Allow the user to pick start and end dates, defaulting to the last 10 days
+    start_date = col2_1.date_input("Start Date", default_start_date, min_value=min_date, max_value=max_date, key='start_date')
+    end_date = col2_2.date_input("End Date", default_end_date, min_value=min_date, max_value=max_date, key='end_date')
+
+    # Filter the data based on selected (or default) date range
     filtered_df = df[(df['Date'] >= start_date) & (df['Date'] <= end_date)]
 
+    # Create the plot
     fig = px.line(filtered_df, x='Date', y='Headshot_Ratio', color='Weapon',
                   color_discrete_map={'m4a1': '#FF2B4B', 'ak47': '#7F1B4B', 'deagle': '#FF9F7F'},
                   markers=True)
+
+    # Customize the line style
     fig.update_traces(line=dict(dash='dash', width=2),  # Dashed line
                       marker=dict(size=8, symbol='x'))
-    # Update the layout
+
+    # Update layout for better readability
     fig.update_layout(
         xaxis_title='Date',
         xaxis=dict(
@@ -324,25 +352,12 @@ with col2:
             dtick="D",  # Interval set to one day
             tickformat="%Y-%m-%d"),
         yaxis_title='Headshot Ratio',
-        yaxis=dict(range=[0, 1]),
+        yaxis=dict(range=[0, 1]),  # Ensure y-axis ranges from 0 to 1
         legend_title='Weapon'
     )
 
+    # Display the plot
     st.plotly_chart(fig)
 
-# ==== Headshot vs distance ====
-st.subheader('Headshots by Distance')
-headshots_df = headshots_by_distance()
-# Create the line chart
-fig = px.scatter(headshots_df, x='Distance', y='Headshot_Count',
 
-                 labels={'Distance': 'Distance (meters)', 'Headshot_Count': 'Number of Headshots'}, )
-fig.update_traces(line_color='#FB1B43')
-# Customize the layout
-fig.update_layout(
-    xaxis_title="Distance (meters)",
-    yaxis_title="Number of Headshots",
-    template="plotly_dark"
-)
 
-st.plotly_chart(fig)
