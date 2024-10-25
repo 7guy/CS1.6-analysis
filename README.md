@@ -1,4 +1,4 @@
-# CS 1.6 Game Performance Analysis Dashboard
+# CS 1.6 Player Performance Dashboard
 
 ## Project Overview
 
