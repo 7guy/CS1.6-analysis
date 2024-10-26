@@ -8,9 +8,10 @@ NICK = '@batata doce'
 # Database connection parameters
 DB_NAME = "CS1.6"
 DB_USER = "postgres"
-DB_PASSWORD =  getpass("Enter your PostgreSQL password: ")
+DB_PASSWORD = getpass("Enter your PostgreSQL password: ")
 DB_HOST = "localhost"
 DB_PORT = "5432"
+
 
 def get_connection():
     conn = psycopg2.connect(
@@ -22,6 +23,7 @@ def get_connection():
     )
     return conn
 
+
 def get_kill_events():
     conn = get_connection()
     cur = conn.cursor()
@@ -30,6 +32,7 @@ def get_kill_events():
     cur.close()
     conn.close()
     return df
+
 
 def killer_victim_ratio():
     conn = get_connection()
@@ -66,6 +69,7 @@ def kills_by_weapon():
 
     return df
 
+
 def deaths_by_weapon():
     conn = get_connection()
     cur = conn.cursor()
@@ -87,6 +91,7 @@ def deaths_by_weapon():
 
     return df
 
+
 def kills_by_distance():
     query = f"""
         SELECT distance, COUNT(*) as kills
@@ -100,6 +105,7 @@ def kills_by_distance():
     df_kills = pd.read_sql(query, conn)
     conn.close()
     return df_kills
+
 
 def deaths_by_distance():
     query = f"""
