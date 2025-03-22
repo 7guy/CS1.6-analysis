@@ -5,7 +5,6 @@
 This project aims to provide data-driven insights into gameplay performance, enabling players to improve their strategies and make informed decisions. By analyzing game logs, the dashboard helps players understand their performance, identify strengths and weaknesses, and optimize their gameplay based on detailed metrics.
 
 ![csdash1](https://github.com/user-attachments/assets/7f514f19-d0cc-4a2a-b15f-d3c71956c7e7)
-![csdash2](https://github.com/user-attachments/assets/aa595f33-88d4-4da4-a749-2bfee46847bd)
 ![image](https://github.com/user-attachments/assets/4530d377-5160-46b6-92db-6114ab32d16f)
 
 
